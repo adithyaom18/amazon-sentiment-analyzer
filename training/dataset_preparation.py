@@ -91,30 +91,15 @@ def load_amazon_data_if_available():
         df_balanced = pd.concat([positive_sample, negative_sample])
         df_balanced = shuffle(df_balanced, random_state=42).reset_index(drop=True)
         
+        # Rename 'Text' column to 'review' for consistency
+        df_balanced = df_balanced.rename(columns={'Text': 'review'})
+        
         print(f"📊 Balanced dataset: {len(df_balanced)} reviews ({sample_size} each class)")
         return df_balanced
         
     except FileNotFoundError:
         print("📝 Amazon dataset not found. Using sample dataset for development.")
         return create_sample_dataset()
-
-def save_datasets(df):
-    """
-    Save processed datasets for training
-    """
-    # Create data directory if it doesn't exist
-    os.makedirs('data', exist_ok=True)
-    
-    # Save full processed dataset
-    df.to_csv('data/processed_reviews.csv', index=False)
-    
-    # Save a smaller version for quick testing
-    df_small = df.sample(min(1000, len(df)), random_state=42)
-    df_small.to_csv('data/sample_reviews.csv', index=False)
-    
-    print("💾 Datasets saved:")
-    print(f"   - data/processed_reviews.csv ({len(df)} reviews)")
-    print(f"   - data/sample_reviews.csv ({len(df_small)} reviews)")
 
 def analyze_dataset(df):
     """
@@ -126,13 +111,8 @@ def analyze_dataset(df):
     print(f"Positive reviews: {len(df[df['sentiment'] == 1])}")
     print(f"Negative reviews: {len(df[df['sentiment'] == 0])}")
     
-    # Calculate average review length - use 'Text' column for Amazon dataset
-    if 'Text' in df.columns:
-        df['review_length'] = df['Text'].apply(len)
-        column_to_show = 'Text'
-    else:
-        df['review_length'] = df['review'].apply(len)
-        column_to_show = 'review'
+    # Calculate average review length
+    df['review_length'] = df['review'].apply(len)
     
     avg_length = df['review_length'].mean()
     print(f"Average review length: {avg_length:.1f} characters")
@@ -142,46 +122,8 @@ def analyze_dataset(df):
     print("-" * 30)
     for i, (_, row) in enumerate(df.head(3).iterrows(), 1):
         sentiment = "Positive" if row['sentiment'] == 1 else "Negative"
-        review_text = row[column_to_show]
+        review_text = row['review']
         print(f"Review {i} ({sentiment}): {review_text[:100]}...")
-
-def load_amazon_data_if_available():
-    """
-    Try to load the actual Amazon dataset if available
-    If not, use the sample dataset
-    """
-    try:
-        # Try to load the Amazon dataset
-        df = pd.read_csv('data/Reviews.csv')
-        print(f"✅ Amazon dataset loaded: {len(df)} reviews")
-        
-        # Create sentiment labels (4-5 stars = Positive, 1-2 stars = Negative)
-        df['sentiment'] = df['Score'].apply(lambda x: 1 if x > 3 else (0 if x < 3 else -1))
-        
-        # Remove neutral reviews (Score = 3)
-        df = df[df['sentiment'] != -1]
-        
-        # Balance the dataset
-        positive = df[df['sentiment'] == 1]
-        negative = df[df['sentiment'] == 0]
-        
-        # Take smaller sample for development
-        sample_size = min(5000, len(positive), len(negative))
-        positive_sample = positive.sample(sample_size, random_state=42)
-        negative_sample = negative.sample(sample_size, random_state=42)
-        
-        df_balanced = pd.concat([positive_sample, negative_sample])
-        df_balanced = shuffle(df_balanced, random_state=42).reset_index(drop=True)
-        
-        # Rename 'Text' column to 'review' for consistency
-        df_balanced = df_balanced.rename(columns={'Text': 'review'})
-        
-        print(f"📊 Balanced dataset: {len(df_balanced)} reviews ({sample_size} each class)")
-        return df_balanced
-        
-    except FileNotFoundError:
-        print("📝 Amazon dataset not found. Using sample dataset for development.")
-        return create_sample_dataset()
 
 def save_datasets(df):
     """
