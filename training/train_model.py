@@ -3,11 +3,6 @@ import numpy as np
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
-import nltk
-import re
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestClassifier
@@ -16,62 +11,16 @@ from sklearn.svm import SVC
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 import os
+import sys
+import os
 
-class TextPreprocessor:
-    def __init__(self):
-        self.lemmatizer = WordNetLemmatizer()
-        self.stop_words = set(stopwords.words('english'))
-        # Add custom stopwords for product reviews
-        self.custom_stopwords = {'product', 'item', 'buy', 'purchase', 'amazon', 'order'}
-        self.stop_words.update(self.custom_stopwords)
-    
-    def clean_text(self, text):
-        """Clean text by removing URLs, special characters, etc."""
-        if pd.isna(text):
-            return ""
-        
-        # Convert to string and lowercase
-        text = str(text).lower()
-        
-        # Remove URLs
-        text = re.sub(r'http\S+', '', text)
-        
-        # Remove special characters and digits but keep basic punctuation
-        text = re.sub(r'[^a-zA-Z\s!?]', '', text)
-        
-        # Remove extra whitespace
-        text = re.sub(r'\s+', ' ', text).strip()
-        
-        return text
-    
-    def tokenize_and_lemmatize(self, text):
-        """Tokenize and lemmatize text using NLTK"""
-        # Tokenize
-        tokens = word_tokenize(text)
-        
-        # Remove stopwords and short tokens, then lemmatize
-        processed_tokens = [
-            self.lemmatizer.lemmatize(token) 
-            for token in tokens 
-            if token not in self.stop_words and len(token) > 2
-        ]
-        
-        return processed_tokens
-    
-    def preprocess_pipeline(self, text):
-        """Complete preprocessing pipeline"""
-        # Clean text
-        cleaned_text = self.clean_text(text)
-        
-        # Tokenize and lemmatize
-        tokens = self.tokenize_and_lemmatize(cleaned_text)
-        
-        # Return as string for vectorization
-        return ' '.join(tokens)
+# Add the app directory to Python path to import preprocessing
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from app.models.preprocessing import TextPreprocessor
 
 class ModelTrainer:
     def __init__(self):
-        self.preprocessor = TextPreprocessor()
+        self.preprocessor = TextPreprocessor()  # Now using the imported class
         self.vectorizer = None
         self.model = None
         self.feature_method = None
