@@ -320,6 +320,6 @@ if __name__ == "__main__":
     # Initialize trainer
     trainer = ModelTrainer()
     
-    # Run training with sample data (faster for testing)
-    print("🎯 Training with sample data (fast)...")
-    results = trainer.run_training_pipeline(use_sample=True, feature_method='tfidf')
+    # Change this line from True to False
+    print("🎯 Training with FULL dataset (better accuracy)...")
+    results = trainer.run_training_pipeline(use_sample=False, feature_method='tfidf')

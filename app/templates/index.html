@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 mb-4">Amazon Product Review Sentiment Analyzer</h1>
+        <p class="lead">Analyze the sentiment of product reviews using our trained machine learning model</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Features -->
+    <div class="row mb-5">
+        <div class="col-md-4 text-center">
+            <i class="fas fa-brain feature-icon mb-3"></i>
+            <h4>Machine Learning</h4>
+            <p>Powered by {{ model_info.name }} model with {{ model_info.accuracy }} accuracy</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <i class="fas fa-language feature-icon mb-3"></i>
+            <h4>NLP Processing</h4>
+            <p>Advanced text preprocessing with NLTK and TF-IDF features</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <i class="fas fa-chart-bar feature-icon mb-3"></i>
+            <h4>Real-time Analysis</h4>
+            <p>Get instant sentiment analysis with confidence scores</p>
+        </div>
+    </div>
+
+    <!-- Analysis Form -->
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-search"></i> Analyze Review Sentiment</h4>
+            </div>
+            <div class="card-body">
+                {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                
+                <form method="POST" action="{{ url_for('analyze_sentiment') }}">
+                    <div class="mb-3">
+                        <label for="text" class="form-label">Enter Product Review:</label>
+                        <textarea class="form-control" id="text" name="text" rows="5" 
+                                  placeholder="Enter a product review to analyze its sentiment (e.g., 'This product is amazing! Great quality and fast delivery.')"
+                                  required>{{ request.form.text if request.form.text }}</textarea>
+                        <div class="form-text">Enter at least 10 characters for accurate analysis.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="fas fa-analytics"></i> Analyze Sentiment
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Example Reviews -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Try These Examples:</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p class="card-text">"This product is absolutely fantastic! The quality exceeded my expectations and it works perfectly."</p>
+                                <small class="text-muted">(Positive Review)</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p class="card-text">"Terrible product. Stopped working after just 2 days. Complete waste of money."</p>
+                                <small class="text-muted">(Negative Review)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

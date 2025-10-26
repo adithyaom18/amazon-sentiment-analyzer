@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}About - Sentiment Analyzer{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fas fa-info-circle"></i> About This Project</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Project Description -->
+                    <div class="mb-4">
+                        <h5>Project Overview</h5>
+                        <p>This Amazon Product Review Sentiment Analyzer is a machine learning web application that classifies product reviews as positive or negative using natural language processing techniques.</p>
+                    </div>
+
+                    <!-- Model Information -->
+                    <div class="mb-4">
+                        <h5>Model Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong>Algorithm:</strong> {{ model_info.name }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Accuracy:</strong> {{ model_info.accuracy }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Training Data:</strong> {{ model_info.training_samples }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong>Feature Extraction:</strong> {{ model_info.features }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Preprocessing:</strong> NLTK Tokenization & Lemmatization
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Framework:</strong> Flask Web Application
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Technology Stack -->
+                    <div class="mb-4">
+                        <h5>Technology Stack</h5>
+                        <div class="row text-center">
+                            <div class="col-md-2 mb-3">
+                                <i class="fab fa-python fa-3x text-primary mb-2"></i>
+                                <div>Python</div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <i class="fas fa-flask fa-3x text-success mb-2"></i>
+                                <div>Flask</div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <i class="fas fa-brain fa-3x text-warning mb-2"></i>
+                                <div>Scikit-learn</div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <i class="fas fa-language fa-3x text-info mb-2"></i>
+                                <div>NLTK</div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <i class="fab fa-html5 fa-3x text-danger mb-2"></i>
+                                <div>HTML/CSS</div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <i class="fab fa-bootstrap fa-3x text-purple mb-2"></i>
+                                <div>Bootstrap</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NLP Pipeline -->
+                    <div class="mb-4">
+                        <h5>Natural Language Processing Pipeline</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <ol class="list-group list-group-numbered">
+                                    <li class="list-group-item">
+                                        <strong>Text Cleaning:</strong> Remove URLs, special characters, and convert to lowercase
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Tokenization:</strong> Split text into individual words/tokens
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Stopword Removal:</strong> Remove common words that don't carry meaning
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Lemmatization:</strong> Reduce words to their base/dictionary form
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Feature Extraction:</strong> Convert text to TF-IDF numerical features
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Classification:</strong> Predict sentiment using trained machine learning model
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dataset Information -->
+                    <div class="mb-4">
+                        <h5>Dataset</h5>
+                        <p>The model was trained on the <strong>Amazon Fine Food Reviews</strong> dataset from Kaggle, containing over 500,000 food reviews from Amazon.</p>
+                        <p>For development and testing, we used a balanced sample of 1,000 reviews (500 positive, 500 negative).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Results - Sentiment Analyzer{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <!-- Back Button -->
+            <div class="mb-4">
+                <a href="{{ url_for('home') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Analyzer
+                </a>
+            </div>
+
+            <!-- Results Card -->
+            <div class="card shadow-lg">
+                <div class="card-header {% if result.sentiment == 'positive' %}bg-success{% else %}bg-danger{% endif %} text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-{% if result.sentiment == 'positive' %}smile{% else %}frown{% endif %}"></i>
+                        Sentiment Analysis Results
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Sentiment Result -->
+                    <div class="text-center mb-4">
+                        <div class="display-4 {% if result.sentiment == 'positive' %}sentiment-positive{% else %}sentiment-negative{% endif %} mb-3">
+                            <i class="fas fa-{% if result.sentiment == 'positive' %}thumbs-up{% else %}thumbs-down{% endif %}"></i>
+                            {{ result.sentiment|title }} Sentiment
+                        </div>
+                        <div class="h4 text-muted">
+                            Confidence: <strong>{{ result.confidence }}%</strong>
+                        </div>
+                    </div>
+
+                    <!-- Original Review -->
+                    <div class="mb-4">
+                        <h5><i class="fas fa-file-alt"></i> Original Review:</h5>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <p class="mb-0">{{ result.text }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confidence Scores -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title sentiment-positive">Positive Confidence</h6>
+                                    <div class="h3 sentiment-positive">{{ result.positive_score }}%</div>
+                                    <div class="progress confidence-bar">
+                                        <div class="progress-bar bg-success" style="width: {{ result.positive_score }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title sentiment-negative">Negative Confidence</h6>
+                                    <div class="h3 sentiment-negative">{{ result.negative_score }}%</div>
+                                    <div class="progress confidence-bar">
+                                        <div class="progress-bar bg-danger" style="width: {{ result.negative_score }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Processed Text (for debugging) -->
+                    <details class="mb-4">
+                        <summary class="h5">
+                            <i class="fas fa-code"></i> Technical Details (Preprocessed Text)
+                        </summary>
+                        <div class="card bg-dark text-light mt-2">
+                            <div class="card-body">
+                                <code>{{ result.processed_text }}</code>
+                            </div>
+                        </div>
+                    </details>
+
+                    <!-- Analyze Another -->
+                    <div class="text-center">
+                        <a href="{{ url_for('home') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-redo"></i> Analyze Another Review
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADD THIS NEW SECTION HERE -->
+            <!-- Model Performance Info -->
+            <div class="card mt-4">
+                <div class="card-body text-center">
+                    <h5><i class="fas fa-info-circle"></i> About Our Model</h5>
+                    <p class="mb-2">This analysis was performed by a {{ model_info.name }} model trained on Amazon product reviews.</p>
+                    <p class="mb-0"><strong>Accuracy:</strong> {{ model_info.accuracy }} | <strong>Training Data:</strong> {{ model_info.training_samples }}</p>
+                </div>
+            </div>
+            <!-- END OF NEW SECTION -->
+
+        </div>
+    </div>
+</div>
+{% endblock %}
